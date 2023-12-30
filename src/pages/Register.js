@@ -37,7 +37,7 @@ export default function RegistrationForm() {
     } else {
       console.log(student);
 
-      fetch("http://localhost:8080/student/add", {
+      fetch("http://localhost:8080/user/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(student),

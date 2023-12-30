@@ -5,22 +5,22 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import imageSrc from '../graphics/149071.png'; // Importuj ścieżkę do obrazu
 
 function Selection() {
-  const [students, setStudents] = useState([]);
+  const [user, setUser] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    fetch('http://localhost:8080/student/getAll')
+    fetch('http://localhost:8080/user/getAll')
       .then(response => response.json())
       .then(data => {
         if (data && data.length > 0) {
-          setStudents(data);
+          setUser(data);
         } else {
-          setStudents([]);
+          setUser([]);
         }
       })
       .catch(error => {
         console.error('Error fetching data:', error);
-        setStudents([]);
+        setUser([]);
       });
   }, []);
 
@@ -29,7 +29,7 @@ function Selection() {
 
   };
 
-  const currentStudent = students.length > 0 ? students[currentIndex] : null;
+  const currentStudent = user.length > 0 ? user[currentIndex] : null;
 
   return (
     <div style={{ textAlign: 'center', padding: '20px', marginTop: '10%' }}>
@@ -42,20 +42,20 @@ function Selection() {
           />
 
           <div style={{ marginTop: '20px' }}>
-            {currentIndex < students.length  && (
+            {currentIndex < user.length  && (
               <div>
                 <p style={{ fontSize: '20px' }}>Name: {currentStudent.name}</p>
                 <p style={{ fontSize: '20px' }}>Age: {currentStudent.age}</p>
               </div>
             )}
-            {currentIndex === students.length && (
+            {currentIndex === user.length && (
               <div>
                 <p style={{ fontSize: '20px' }}>Koniec Par</p>
               </div>
             )}
           </div>
 
-          {currentIndex < students.length  && (
+          {currentIndex < user.length  && (
             <>
               <IconButton onClick={handleNextClick} color="primary">
                 <DeleteIcon />
