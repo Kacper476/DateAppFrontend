@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -6,6 +7,7 @@ import Button from '@mui/material/Button';
 const LoginForm = () => {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -13,7 +15,6 @@ const LoginForm = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          // Add any additional headers if needed
         },
       });
 
@@ -24,7 +25,16 @@ const LoginForm = () => {
       const user = await response.json();
 
       if (user && user.password === passwordValue) {
+        // Assuming your server sends a token upon successful login
+        const token = 'd0pa'; // Ustaw token na 'd0pa'
+
+        // Store the token in cookies
+        document.cookie = `token=${token}; path=/`;
+
         alert('Poprawne dane logowania');
+
+        // Po pomyślnym zalogowaniu, przenieś do "/selection"
+        navigate('/selection');
       } else {
         alert('Niepoprawne dane logowania');
       }

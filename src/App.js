@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import EmailForm from './pages/Login';
+import LoginForm from './pages/Login';
 import RegistrationForm from './pages/Register';
 import SelectionForm from './pages/selection';
-
+import TokenPage from './pages/Tokenpage';
 function App() {
   return (
     <Router>
@@ -11,9 +11,10 @@ function App() {
         <Routes>
           {/* Ustawienie ścieżki domyślnej na /login */}
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<EmailForm />} />
+          <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/selection" element={<SelectionForm />} />
+          <Route path="/token" element={<TokenPage />} />
         </Routes>
       </div>
     </Router>

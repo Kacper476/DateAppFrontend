@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import imageSrc from '../graphics/149071.png'; // Importuj ścieżkę do obrazu
+import imageSrc from '../graphics/149071.png'; 
 
 function Selection() {
   const [user, setUser] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const [token, setToken] = useState(null);
+  
   useEffect(() => {
     fetch('http://localhost:8080/user/getAll')
       .then(response => response.json())
@@ -24,56 +25,86 @@ function Selection() {
       });
   }, []);
 
+
+  
+  useEffect(() => {
+    // Funkcja do odczytu wartości z plików cookie
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      return parts.length === 2 ? parts.pop().split(';').shift() : null;
+    };
+
+    // Odczytanie tokena z plików cookie
+    const retrievedToken = getCookie('token');
+
+    // Sprawdzenie czy token istnieje
+    if (retrievedToken) {
+      setToken(retrievedToken);
+    }
+  }, []); 
+
+
   const handleNextClick = () => {
     setCurrentIndex(currentIndex + 1);
 
   };
-
+  
   const currentStudent = user.length > 0 ? user[currentIndex] : null;
 
   return (
     <div style={{ textAlign: 'center', padding: '20px', marginTop: '10%' }}>
-      {currentStudent && (
+      {token ? (
         <>
-          <img
-            src={imageSrc}
-            alt="Sample"
-            style={{ width: '256px', height: '256px', objectFit: 'cover' }}
-          />
-
-          <div style={{ marginTop: '20px' }}>
-            {currentIndex < user.length  && (
-              <div>
-                <p style={{ fontSize: '20px' }}>Name: {currentStudent.name}</p>
-                <p style={{ fontSize: '20px' }}>Age: {currentStudent.age}</p>
-              </div>
-            )}
-            {currentIndex === user.length && (
-              <div>
-                <p style={{ fontSize: '20px' }}>Koniec Par</p>
-              </div>
-            )}
-          </div>
-
-          {currentIndex < user.length  && (
+          {/* Informacje o studencie */}
+          {currentStudent && (
             <>
-              <IconButton onClick={handleNextClick} color="primary">
-                <DeleteIcon />
-              </IconButton>
+              <img
+                src={imageSrc}
+                alt="Sample"
+                style={{ width: '256px', height: '256px', objectFit: 'cover' }}
+              />
 
-              <IconButton onClick={handleNextClick} color="primary">
-                <FavoriteIcon />
-              </IconButton>
+              <div style={{ marginTop: '20px' }}>
+                {currentIndex < user.length && (
+                  <div>
+                    <p style={{ fontSize: '20px' }}>Name: {currentStudent.name}</p>
+                    <p style={{ fontSize: '20px' }}>Age: {currentStudent.age}</p>
+                  </div>
+                )}
+                {currentIndex === user.length && (
+                  <div>
+                    <p style={{ fontSize: '20px' }}>Koniec Par</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Przyciski do obsługi kolejnych studentów */}
+              {currentIndex < user.length && (
+                <>
+                  <IconButton onClick={handleNextClick} color="primary">
+                    <DeleteIcon />
+                  </IconButton>
+
+                  <IconButton onClick={handleNextClick} color="primary">
+                    <FavoriteIcon />
+                  </IconButton>
+                </>
+              )}
             </>
           )}
-        </>
-      )}
 
-      {!currentStudent && (
-        <p style={{ fontSize: '20px' }}>No student data available</p>
+          {/* Komunikat, gdy nie ma danych o studencie */}
+          {!currentStudent && (
+            <p style={{ fontSize: '20px' }}>No student data available</p>
+          )}
+        </>
+      ) : (
+        // Komunikat, gdy nie jesteś zalogowany
+        <p style={{ fontSize: '20px' }}>Nie zalogowano</p>
       )}
     </div>
   );
-}
+};
 
 export default Selection;
