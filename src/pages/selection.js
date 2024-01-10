@@ -3,11 +3,22 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import imageSrc from '../graphics/149071.png'; 
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import RestoreIcon from '@mui/icons-material/Restore';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 function Selection() {
   const [user, setUser] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [token, setToken] = useState(null);
+  const [value, setValue] = useState(0); // Nowe pole stanu do obsługi wartości BottomNavigation
+
+  
+  
+  
+
   
   useEffect(() => {
     fetch('http://localhost:8080/user/getAll')
@@ -25,31 +36,51 @@ function Selection() {
       });
   }, []);
 
-
-  
   useEffect(() => {
-    // Funkcja do odczytu wartości z plików cookie
     const getCookie = (name) => {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
       return parts.length === 2 ? parts.pop().split(';').shift() : null;
     };
 
-    // Odczytanie tokena z plików cookie
     const retrievedToken = getCookie('token');
 
-    // Sprawdzenie czy token istnieje
     if (retrievedToken) {
       setToken(retrievedToken);
     }
   }, []); 
 
-
   const handleNextClick = () => {
     setCurrentIndex(currentIndex + 1);
-
   };
+
+  const handleFavoriteClick = () => {
+    const student = {
+      user1: "1", // Zastąp "YourName" właściwym imieniem
+      user2: "2",
+    };
   
+    if (student) {
+      // Wywołaj API, aby dodać ulubionego studenta do bazy danych
+      fetch('http://localhost:8080/pairs/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(student),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Błąd dodawania ulubionego studenta');
+          }
+          console.log('Ulubiony student dodany');
+          // Tutaj możesz dodać dodatkową logikę lub odświeżyć listę studentów
+        })
+        .catch((error) => {
+          console.error('Błąd dodawania ulubionego studenta:', error.message);
+        });
+    }
+  };
+
+
   const currentStudent = user.length > 0 ? user[currentIndex] : null;
 
   return (
@@ -86,9 +117,10 @@ function Selection() {
                     <DeleteIcon />
                   </IconButton>
 
-                  <IconButton onClick={handleNextClick} color="primary">
-                    <FavoriteIcon />
-                  </IconButton>
+                  <IconButton onClick={handleFavoriteClick} color="primary">
+                <FavoriteIcon />
+              </IconButton>
+
                 </>
               )}
             </>
@@ -98,6 +130,20 @@ function Selection() {
           {!currentStudent && (
             <p style={{ fontSize: '20px' }}>No student data available</p>
           )}
+
+          {/* BottomNavigation */}
+          <BottomNavigation
+            style={{ position: 'fixed', bottom: 0, width: '100%' }}
+            showLabels
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+          >
+            <BottomNavigationAction label="Settings" icon={<RestoreIcon />} />
+            <BottomNavigationAction label="Favorites" icon={<FavoriteOutlinedIcon />} />
+            <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+          </BottomNavigation>
         </>
       ) : (
         // Komunikat, gdy nie jesteś zalogowany
@@ -105,6 +151,6 @@ function Selection() {
       )}
     </div>
   );
-};
+}
 
 export default Selection;

@@ -110,7 +110,7 @@ export default function RegistrationForm() {
           }}
           inputValue={genderValue?.toString() || ''}
           onInputChange={(event, newInputValue) => {
-            // W tym przypadku możesz pozostawić to puste, ponieważ nie korzystamy z inputValue do niczego konkretnego
+        
           }}
           id="controllable-Gender"
           options={genders}
