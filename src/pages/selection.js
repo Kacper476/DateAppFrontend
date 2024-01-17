@@ -13,19 +13,20 @@ function Selection() {
   const [user, setUser] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [token, setToken] = useState(null);
-  const [value, setValue] = useState(0); // Nowe pole stanu do obsługi wartości BottomNavigation
+  const [value, setValue] = useState(0);
 
-  
-  
-  
-
-  
   useEffect(() => {
-    fetch('http://localhost:8080/user/getAll')
+    fetch('http://localhost:8080/user/getAll', {
+      headers: {
+        Authorization: `Bearer ${token}`, // Assuming token is used for authorization
+      },
+    })
       .then(response => response.json())
       .then(data => {
         if (data && data.length > 0) {
-          setUser(data);
+          // Filtruj użytkowników, pomijając tych o ID równym token
+          const filteredUsers = data.filter(user => user.id !== parseInt(token, 10));
+          setUser(filteredUsers);
         } else {
           setUser([]);
         }
@@ -34,7 +35,7 @@ function Selection() {
         console.error('Error fetching data:', error);
         setUser([]);
       });
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     const getCookie = (name) => {
@@ -56,15 +57,14 @@ function Selection() {
 
   const handleFavoriteClick = () => {
     const student = {
-      user1: "1", // Zastąp "YourName" właściwym imieniem
-      user2: "2",
+      user1: token,
+      user2: currentStudent.id,
     };
-  
+
     if (student) {
-      // Wywołaj API, aby dodać ulubionego studenta do bazy danych
       fetch('http://localhost:8080/pairs/add', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(student),
       })
         .then(response => {
@@ -72,7 +72,6 @@ function Selection() {
             throw new Error('Błąd dodawania ulubionego studenta');
           }
           console.log('Ulubiony student dodany');
-          // Tutaj możesz dodać dodatkową logikę lub odświeżyć listę studentów
         })
         .catch((error) => {
           console.error('Błąd dodawania ulubionego studenta:', error.message);
@@ -80,14 +79,12 @@ function Selection() {
     }
   };
 
-
   const currentStudent = user.length > 0 ? user[currentIndex] : null;
 
   return (
     <div style={{ textAlign: 'center', padding: '20px', marginTop: '10%' }}>
       {token ? (
         <>
-          {/* Informacje o studencie */}
           {currentStudent && (
             <>
               <img
@@ -95,7 +92,7 @@ function Selection() {
                 alt="Sample"
                 style={{ width: '256px', height: '256px', objectFit: 'cover' }}
               />
-
+  
               <div style={{ marginTop: '20px' }}>
                 {currentIndex < user.length && (
                   <div>
@@ -109,29 +106,25 @@ function Selection() {
                   </div>
                 )}
               </div>
-
-              {/* Przyciski do obsługi kolejnych studentów */}
+  
               {currentIndex < user.length && (
                 <>
-                  <IconButton onClick={handleNextClick} color="primary">
+                  <IconButton onClick={() => { handleNextClick(); handleFavoriteClick(); }} color="primary">
                     <DeleteIcon />
                   </IconButton>
-
-                  <IconButton onClick={handleFavoriteClick} color="primary">
-                <FavoriteIcon />
-              </IconButton>
-
+  
+                  <IconButton onClick={() => { handleFavoriteClick(); handleNextClick(); }} color="primary">
+                    <FavoriteIcon />
+                  </IconButton>
                 </>
               )}
             </>
           )}
-
-          {/* Komunikat, gdy nie ma danych o studencie */}
+  
           {!currentStudent && (
             <p style={{ fontSize: '20px' }}>No student data available</p>
           )}
-
-          {/* BottomNavigation */}
+  
           <BottomNavigation
             style={{ position: 'fixed', bottom: 0, width: '100%' }}
             showLabels
@@ -146,7 +139,6 @@ function Selection() {
           </BottomNavigation>
         </>
       ) : (
-        // Komunikat, gdy nie jesteś zalogowany
         <p style={{ fontSize: '20px' }}>Nie zalogowano</p>
       )}
     </div>

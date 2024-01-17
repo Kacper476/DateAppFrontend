@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginForm from './pages/Login';
 import RegistrationForm from './pages/Register';
 import SelectionForm from './pages/selection';
-import TokenPage from './pages/Tokenpage';
+import TokenPage from './pages/Pairs';
 function App() {
   return (
     <Router>
@@ -14,7 +14,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/selection" element={<SelectionForm />} />
-          <Route path="/token" element={<TokenPage />} />
+          <Route path="/Pairs" element={<TokenPage />} />
         </Routes>
       </div>
     </Router>

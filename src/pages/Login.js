@@ -26,7 +26,7 @@ const LoginForm = () => {
 
       if (user && user.password === passwordValue) {
         // Assuming your server sends a token upon successful login
-        const token = 'd0pa'; // Ustaw token na 'd0pa'
+        const token = user.id; // Ustaw token na 'd0pa'
 
         // Store the token in cookies
         document.cookie = `token=${token}; path=/`;
