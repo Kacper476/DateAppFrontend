@@ -22,11 +22,11 @@ export default function RegistrationForm() {
     e.preventDefault();
 
     const student = {
-      name: loginValue, // Zastąp "YourName" właściwym imieniem
+      name: loginValue, 
       password: passwordValue,
-      age: ageValue, // Zastąp 25 odpowiednim wiekiem
-      email: emailValue, // Zastąp "your.email@example.com" właściwym adresem e-mail
-      sex: genderValue, // Zastąp "Male" właściwą wartością płci
+      age: ageValue, 
+      email: emailValue,
+      sex: genderValue, 
     };
 
     const requiredFields = ["name", "password", "age", "email", "sex"];

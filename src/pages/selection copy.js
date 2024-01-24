@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import imageSrc from '../graphics/149071.png'; // Importuj ścieżkę do obrazu
+import imageSrc from '../graphics/149071.png'; 
 
 function Selection() {
   const [user, setUser] = useState([]);

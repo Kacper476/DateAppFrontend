@@ -3,28 +3,24 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import imageSrc from '../graphics/149071.png'; 
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import SimpleBottomNavigation from '../components/BottomNavigation';
 
 function Selection() {
   const [user, setUser] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [token, setToken] = useState(null);
-  const [value, setValue] = useState(0);
+
 
   useEffect(() => {
-    fetch('http://localhost:8080/user/getAll', {
+    fetch('http://localhost:8080/user/getSelectionUser?id=' + token, {
       headers: {
-        Authorization: `Bearer ${token}`, // Assuming token is used for authorization
+        Authorization: `Bearer ${token}`, 
       },
     })
       .then(response => response.json())
       .then(data => {
         if (data && data.length > 0) {
-          // Filtruj użytkowników, pomijając tych o ID równym token
+          
           const filteredUsers = data.filter(user => user.id !== parseInt(token, 10));
           setUser(filteredUsers);
         } else {
@@ -82,14 +78,13 @@ function Selection() {
   const currentStudent = user.length > 0 ? user[currentIndex] : null;
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px', marginTop: '10%' }}>
+    <div style={{ textAlign: 'center', padding: '20px', marginTop: '10%', }}>
       {token ? (
         <>
           {currentStudent && (
             <>
               <img
-                src={imageSrc}
-                alt="Sample"
+                src={currentStudent.photourl !== null ? currentStudent.photourl : imageSrc}
                 style={{ width: '256px', height: '256px', objectFit: 'cover' }}
               />
   
@@ -116,30 +111,33 @@ function Selection() {
                   <IconButton onClick={() => { handleFavoriteClick(); handleNextClick(); }} color="primary">
                     <FavoriteIcon />
                   </IconButton>
+                  
+
+
                 </>
+                
               )}
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', paddingTop: '250px' }}>
+  <SimpleBottomNavigation />
+</div>
             </>
+            
           )}
   
           {!currentStudent && (
-            <p style={{ fontSize: '20px' }}>No student data available</p>
+            <p style={{ fontSize: '20px' }}>No more to choose
+            <div style={{ marginTop: '65vh' }}>
+  <SimpleBottomNavigation />
+</div>
+            
+            </p>
           )}
   
-          <BottomNavigation
-            style={{ position: 'fixed', bottom: 0, width: '100%' }}
-            showLabels
-            value={value}
-            onChange={(event, newValue) => {
-              setValue(newValue);
-            }}
-          >
-            <BottomNavigationAction label="Settings" icon={<RestoreIcon />} />
-            <BottomNavigationAction label="Favorites" icon={<FavoriteOutlinedIcon />} />
-            <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-          </BottomNavigation>
+    
         </>
       ) : (
-        <p style={{ fontSize: '20px' }}>Nie zalogowano</p>
+        <p style={{ fontSize: '20px' }}>Nie zalogowano
+        </p>
       )}
     </div>
   );

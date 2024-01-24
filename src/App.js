@@ -3,6 +3,7 @@ import LoginForm from './pages/Login';
 import RegistrationForm from './pages/Register';
 import SelectionForm from './pages/selection';
 import TokenPage from './pages/Pairs';
+import Chat from './pages/chat';
 function App() {
   return (
     <Router>
@@ -15,6 +16,7 @@ function App() {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/selection" element={<SelectionForm />} />
           <Route path="/Pairs" element={<TokenPage />} />
+          <Route path="/chat" element={<Chat/>} />
         </Routes>
       </div>
     </Router>

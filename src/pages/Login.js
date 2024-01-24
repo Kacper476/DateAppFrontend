@@ -69,12 +69,13 @@ const LoginForm = () => {
       </Grid>
       <Grid item style={{ width: '20%' }}>
         <TextField
-          id="outlined-basic-password"
-          label="Password"
-          variant="outlined"
-          fullWidth
-          value={passwordValue}
-          onChange={(e) => setPasswordValue(e.target.value)}
+           id="outlined-basic-password"
+           label="Password"
+           variant="outlined"
+           fullWidth
+           type="password" 
+           value={passwordValue}
+           onChange={(e) => setPasswordValue(e.target.value)}
         />
       </Grid>
 

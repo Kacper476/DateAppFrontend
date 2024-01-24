@@ -15,8 +15,9 @@ function CardPanel({ users, currentIndex, onSendMessage }) {
             <CardMedia
               component="img"
               alt="Student Image"
-              height="300" // Reduced height by 30%
-              image={imageSrc}
+              height="300" 
+              image={user.photourl !== null ? user.photourl : imageSrc}
+              
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
