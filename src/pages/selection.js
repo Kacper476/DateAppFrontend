@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/HeartBroken';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import imageSrc from '../graphics/149071.png'; 
 import SimpleBottomNavigation from '../components/BottomNavigation';

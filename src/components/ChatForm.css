@@ -1,0 +1,9 @@
+.message-right {
+    text-align: right;
+    margin-left: auto;
+  }
+  
+  .message-left {
+    text-align: left;
+    margin-right: auto;
+  }
